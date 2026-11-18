@@ -1,3 +1,57 @@
+version: '3.8'
+services:
+  adpbetty-asset-engine:
+    build: .
+    container_name: adpbetty_asset_core
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    environment:
+      - DB_PATH=/app/data/adpbetty_assets.db
+    networks:
+      - internal_secure
+
+networks:
+- internal_secure:
+    internal: true
+import requests
+
+
+def check_btc_balance(xpub_or_address):
+  # Query public blockchain explorer APIs securely via loopback/whitelisted egress
+  url = f"https://blockstream.info/api/address/{xpub_or_address}"
+  try:
+    response = requests.get(url, timeout=10)
+    if response.status_code == 200:
+      data = response.json()
+      funded = (
+          data["chain_stats"]["funded_txoed_sum"]
+          - data["chain_stats"]["spent_txo_sum"]
+      )
+      print(f"[*] Address {xpub_or_address} Net Balance (Satoshis): {funded}")
+      return funded
+  except Exception as e:
+    print(f"[!] Blockchain query error: {e}")
+version: '3.8'
+services:
+  adpbetty-asset-engine:
+    build: .
+    container_name: adpbetty_asset_core
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    environment:
+      - DB_PATH=/app/data/adpbetty_assets.db
+    networks:
+      - internal_secure
+
+networks:
+- internal_secure:
+    internal: true
+It looks like you are reviewing snippets of your Python automation scripts (search_indiana_unclaimed and check_btc_balance) alongside some search output and account references.
+Would you like to expand these scripts into a fully integrated, modular adpBetty pipeline—for instance, adding automated logging, error handling, or database result export features?
+It looks like you are reviewing snippets of your Python automation scripts (search_indiana_unclaimed and check_btc_balance) alongside some search output and account references.
+Would you like to expand these scripts into a fully integrated, modular adpBetty pipeline—for instance, adding automated logging, error handling, or database result export features?
 repo # docs
 Official docs for the Global AI Community
 weglot logo
